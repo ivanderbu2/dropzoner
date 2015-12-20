@@ -13,7 +13,8 @@ class DropzonerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(realpath(__DIR__.'/../views'), 'dropzoner');
         $this->setupRoutes($this->app->router);
 
-        $this->publishes([__DIR__.'/config/dropzoner.php' => config_path('dropzoner')]);
+        $this->publishes([__DIR__.'/config/dropzoner.php' => config_path('dropzoner.php')]);
+        $this->publishes([__DIR__.'/../assets' => public_path('vendor/dropzoner')], 'public');
     }
 
     public function setupRoutes(Router $router)

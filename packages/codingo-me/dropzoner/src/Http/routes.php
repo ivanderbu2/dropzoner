@@ -1,3 +1,4 @@
 <?php
 
-Route::get('dropzoner', 'DropzonerController@index');
+$s = 'dropzoner.';
+Route::post('dropzoner/upload', ['as' => $s . 'upload', 'uses' => 'DropzonerController@postUpload']);
