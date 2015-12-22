@@ -31,9 +31,6 @@ Dropzone.options.dropzonersDropzone = {
 
         } );
 
-        this.on("addedfile", function(file) {
-            console.log('image added');
-        });
     },
     error: function(file, response) {
         if($.type(response) === "string")

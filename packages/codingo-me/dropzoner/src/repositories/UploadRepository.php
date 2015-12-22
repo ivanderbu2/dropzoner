@@ -2,6 +2,8 @@
 
 namespace Codingo\Dropzoner\Repositories;
 
+use Codingo\Dropzoner\Events\ImageWasDeleted;
+use Codingo\Dropzoner\Events\ImageWasUploaded;
 use Intervention\Image\ImageManager;
 
 class UploadRepository
@@ -48,6 +50,9 @@ class UploadRepository
 
         }
 
+        //Fire ImageWasUploaded Event
+        event(new ImageWasUploaded($originalName, $filenameExt));
+
         return \Response::json([
             'error' => false,
             'code'  => 200,
@@ -70,6 +75,8 @@ class UploadRepository
         if (\File::exists($full_path)) {
             \File::delete($full_path);
         }
+
+        event(new ImageWasDeleted($server_filename));
 
         return \Response::json([
             'error' => false,
