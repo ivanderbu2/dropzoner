@@ -50,19 +50,26 @@ class UploadRepository
 
         return \Response::json([
             'error' => false,
-            'code'  => 200
+            'code'  => 200,
+            'filename' => $filenameExt
         ], 200);
     }
 
     /**
      * Delete Single Image
      *
-     * @param $originalFilename
      * @return mixed
      */
-    public function delete($originalFilename)
+    public function delete()
     {
         $upload_path = config('dropzoner.upload-path');
+
+        $server_filename = \Input::get('id');
+        $full_path = $upload_path . $server_filename;
+
+        if (\File::exists($full_path)) {
+            \File::delete($full_path);
+        }
 
         return \Response::json([
             'error' => false,

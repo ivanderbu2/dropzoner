@@ -18,7 +18,7 @@ Dropzone.options.dropzonersDropzone = {
             $.ajax({
                 type: 'POST',
                 url: 'dropzoner/delete',
-                data: {id: file.name, _token: window.csrfToken},
+                data: {id: file.serverId, _token: window.csrfToken},
                 dataType: 'html',
                 success: function(data){
                     var rep = JSON.parse(data);
@@ -30,6 +30,10 @@ Dropzone.options.dropzonersDropzone = {
             });
 
         } );
+
+        this.on("addedfile", function(file) {
+            console.log('image added');
+        });
     },
     error: function(file, response) {
         if($.type(response) === "string")
@@ -45,8 +49,8 @@ Dropzone.options.dropzonersDropzone = {
         }
         return _results;
     },
-    success: function(file,done) {
-        console.log('image uploaded with success: ' + file);
+    success: function(file,response) {
+        file.serverId = response.filename;
     }
 };
 
