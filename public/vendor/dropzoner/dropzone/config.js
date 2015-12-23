@@ -17,7 +17,7 @@ Dropzone.options.dropzonersDropzone = {
 
             $.ajax({
                 type: 'POST',
-                url: 'dropzoner/delete',
+                url: window.dropzonerDeletePath,
                 data: {id: file.serverId, _token: window.csrfToken},
                 dataType: 'html',
                 success: function(data){
@@ -33,7 +33,7 @@ Dropzone.options.dropzonersDropzone = {
 
     },
     error: function(file, response) {
-        if($.type(response) === "string")
+        if(typeof(response) === "string")
             var message = response; //dropzone sends it's own error messages in string
         else
             var message = response.message;

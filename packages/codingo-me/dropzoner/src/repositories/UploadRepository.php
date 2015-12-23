@@ -29,16 +29,17 @@ class UploadRepository
 
         $photo = $input['file'];
 
-        $originalName = $photo->getClientOriginalName();
-        $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - 4);
+        $original_name = $photo->getClientOriginalName();
+        $extension = $photo->getClientOriginalExtension();
+        $original_name_without_extension = substr($original_name, 0, strlen($original_name) - strlen($extension) - 1);
 
-        $filename = $this->sanitize($originalNameWithoutExt);
+        $filename = $this->sanitize($original_name_without_extension);
         $allowed_filename = $this->createUniqueFilename( $filename );
 
-        $filenameExt = $allowed_filename .'.jpg';
+        $filename_with_extension = $allowed_filename .'.' . $extension;
 
         $manager = new ImageManager();
-        $image = $manager->make( $photo )->encode(config('dropzoner.encode'))->save(config('dropzoner.upload-path') . $filenameExt );
+        $image = $manager->make( $photo )->save(config('dropzoner.upload-path') . $filename_with_extension );
 
         if( !$image ) {
 
@@ -51,12 +52,12 @@ class UploadRepository
         }
 
         //Fire ImageWasUploaded Event
-        event(new ImageWasUploaded($originalName, $filenameExt));
+        event(new ImageWasUploaded($original_name, $filename_with_extension));
 
         return \Response::json([
             'error' => false,
             'code'  => 200,
-            'filename' => $filenameExt
+            'filename' => $filename_with_extension
         ], 200);
     }
 
@@ -96,32 +97,29 @@ class UploadRepository
         $full_size_dir = config('dropzoner.upload-path');
         $full_image_path = $full_size_dir . $filename . '.jpg';
 
-        if ( \File::exists( $full_image_path ) )
-        {
+        if (\File::exists($full_image_path)) {
             // Generate token for image
-            $imageToken = substr(sha1(mt_rand()), 0, 5);
-            return $filename . '-' . $imageToken;
+            $image_token = substr(sha1(mt_rand()), 0, 5);
+            return $filename . '-' . $image_token;
         }
 
         return $filename;
     }
 
     /**
-     * Create safe filenames for server side
+     * Create safe file names for server side
      *
      * @param $string
      * @param bool $force_lowercase
-     * @param bool $anal
      * @return mixed|string
      */
-    private function sanitize($string, $force_lowercase = true, $anal = false)
+    private function sanitize($string, $force_lowercase = true)
     {
         $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
             "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
             "â€”", "â€“", ",", "<", ".", ">", "/", "?");
         $clean = trim(str_replace($strip, "", strip_tags($string)));
         $clean = preg_replace('/\s+/', "-", $clean);
-        $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
 
         return ($force_lowercase) ?
             (function_exists('mb_strtolower')) ?

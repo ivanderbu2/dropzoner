@@ -2,8 +2,6 @@
 
 namespace Codingo\Dropzoner\Events;
 
-use App\Events\Event;
-
 class ImageWasDeleted extends Event
 {
     public $server_filename;

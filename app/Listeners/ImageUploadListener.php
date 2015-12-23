@@ -8,8 +8,8 @@ class ImageUploadListener
 {
     /**
      * Example listener for image uploads
-     * Event carries original_filename and
-     * server_filename
+     * Event carries original_filename
+     * and server_filename
      *
      * @param ImageWasUploaded $event
      */

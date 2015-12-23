@@ -2,8 +2,6 @@
 
 namespace Codingo\Dropzoner\Events;
 
-use App\Events\Event;
-
 class ImageWasUploaded extends Event
 {
     public $original_filename;

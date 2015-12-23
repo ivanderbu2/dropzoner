@@ -62,4 +62,5 @@
 <!-- CSRF Token -->
 <script>
     window.csrfToken = '<?php echo csrf_token(); ?>';
+    window.dropzonerDeletePath = '<?php echo route('dropzoner.delete') ?>';
 </script>
