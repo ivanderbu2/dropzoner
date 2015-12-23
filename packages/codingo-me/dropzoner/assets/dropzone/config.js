@@ -1,6 +1,6 @@
 Dropzone.options.dropzonersDropzone = {
 
-    uploadMultiple: false,
+    uploadMultiple: false,//will not work for multiple uploads
     parallelUploads: 100,
     maxFilesize: 8,
     acceptedFiles: 'image/*',
