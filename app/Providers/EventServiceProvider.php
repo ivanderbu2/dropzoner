@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\SomeEvent' => [
-            'App\Listeners\EventListener',
+        'Codingo\Dropzoner\Events\ImageWasUploaded' => [
+            'App\Listeners\ImageUploadListener',
         ],
     ];
 

@@ -10,7 +10,6 @@ class ImageWasDeleted extends Event
 
     public function __construct($server_filename)
     {
-        \Log::info('ImageWasDeleted Fired, original: ' . $server_filename);
         $this->server_filename = $server_filename;
     }
 }
